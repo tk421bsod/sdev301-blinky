@@ -6,27 +6,22 @@
 int main()
 {
     bn::core::init();
-    bn::color pure_blue = bn::color(0, 0, 31);
-    bn::color pure_green = bn::color(0, 31, 0);
-    bn::color pure_red = bn::color(31, 0, 0);
-    bn::backdrop::set_color(pure_blue);
+    bn::color colors[3] = {bn::color(0, 0, 31), bn::color(0, 31, 0), bn::color(31, 0, 0)};
+    int current_color = 0;
+    bn::backdrop::set_color(colors[0]);
     while (true)
     {
         if (bn::keypad::a_pressed())
         {
-            bn::color current_color = bn::backdrop::color().value();
-            if (current_color == pure_blue)
+            if (current_color == 2)
             {
-                bn::backdrop::set_color(pure_green);
+                current_color = 0; // Wrap around color index to first color in array
             }
-            else if (current_color == pure_green)
+            else
             {
-                bn::backdrop::set_color(pure_red);
+                current_color++;
             }
-            else if (current_color == pure_red)
-            {
-                bn::backdrop::set_color(pure_blue);
-            }
+            bn::backdrop::set_color(colors[current_color]);
         }
 
         bn::core::update();
